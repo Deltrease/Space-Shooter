@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     //use [SerializeField] for allowing a private value to be changed in the inspector view
     [SerializeField]
-    private float _speed = 3.5f;
+    private float _speed = 5f;
     private float _speedMultiplier = 2;
     [SerializeField]
     private GameObject _laserPrefab;
@@ -102,6 +102,15 @@ public class Player : MonoBehaviour
         else if (transform.position.x <= -11.3)
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _speed = 10f;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _speed = 5f;
         }
     }
     void FireLaser()
