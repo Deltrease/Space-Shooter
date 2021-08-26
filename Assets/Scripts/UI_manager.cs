@@ -12,6 +12,13 @@ public class UI_manager : MonoBehaviour
     [SerializeField]
     private float _score = 0;
     [SerializeField]
+    private bool _normalShot = true;
+    [SerializeField]
+    private bool _tripleShot = false;
+    [SerializeField]
+    private bool _ammoType = true;
+
+    [SerializeField]
     private Image _livesImage;
     [SerializeField]
     private Sprite[] _liveSprites;
@@ -21,13 +28,17 @@ public class UI_manager : MonoBehaviour
     private Text _restartText;
     [SerializeField]
     private Text _startText;
+    [SerializeField]
+    private Text _ammoText;
+    [SerializeField]
+    private Text _reloadText;
 
     // Start is called before the first frame update
     void Start()
     {
-        
-        //assign text component to the handle
+        _ammoType = _normalShot;
         _scoreText.text = "Score: " + _score;
+
     }
 
     // Update is called once per frame
@@ -68,5 +79,40 @@ public class UI_manager : MonoBehaviour
     public void StartGame()
     {
         _startText.enabled = false;
+        _ammoText.enabled = true;
+    }
+
+    public void Ammo(int _currentAmmo)
+    {
+        if (_ammoType == _normalShot)
+        {
+            if (_currentAmmo == 0)
+            {
+                _ammoText.enabled = false;
+                _reloadText.enabled = true;
+            }
+            else if (_currentAmmo > 0)
+            {
+                _reloadText.enabled = false;
+                _ammoText.enabled = true;
+                _ammoText.text = "Ammo " + _currentAmmo + "/15";
+            }
+        }
+        else if(_ammoType == _tripleShot)
+        {
+            _ammoText.text = "Triple Shot Ammo " + _currentAmmo + "/10";
+        }
+    }
+
+    public void NormalShot(int _currentAmmo)
+    {
+        _ammoType = _normalShot;
+        _ammoText.text = "Ammo " + _currentAmmo + "/15";
+    }  
+    
+    public void TripleShot(int _currentAmmo)
+    {
+        _ammoType = _tripleShot;
+        _ammoText.text = "Triple Shot Ammo " +_currentAmmo + "/10";
     }
 }

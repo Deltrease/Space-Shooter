@@ -21,6 +21,9 @@ public class Enemy : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private AudioClip _laserFire;
+    [SerializeField]
+    private bool _alive = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +78,7 @@ public class Enemy : MonoBehaviour
             _speed = 0;
             _EnemyAudioSource.clip = _ExplosionClip;
             _EnemyAudioSource.Play();
-
+            _alive = false;
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);
         }
@@ -96,6 +99,7 @@ public class Enemy : MonoBehaviour
             _speed = 0;
             _EnemyAudioSource.clip = _ExplosionClip;
             _EnemyAudioSource.Play();
+            _alive = false;
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);
         }
@@ -103,7 +107,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Firing()
     {
-        while (true)
+        while (_alive == true)
         {
             _EnemyAudioSource.clip = _laserFire;
             _EnemyAudioSource.Play();

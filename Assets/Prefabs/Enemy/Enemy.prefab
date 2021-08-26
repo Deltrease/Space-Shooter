@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa303e89863d5b44aa9039dadd818d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 4
   _enemyPrefab: {fileID: 4900477859129042483}
   _spawnManager: {fileID: 0}
   _destruction: {fileID: 0}
@@ -57,6 +57,7 @@ MonoBehaviour:
   _laserPrefab: {fileID: 3023745687873624941, guid: cb7481fd0cb2f004db584b6e14e628f7,
     type: 3}
   _laserFire: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _alive: 1
 --- !u!212 &5149017053498582148
 SpriteRenderer:
   m_ObjectHideFlags: 0
