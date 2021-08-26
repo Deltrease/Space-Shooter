@@ -248,8 +248,22 @@ public class Player : MonoBehaviour
                 _UI.NormalShot(_ammoCount);
             }
             else
+            {
                 yield return null;
+            }
         }
+    }
+
+    public void AmmoGet()
+    {
+        if (_TripleShotActive == false)
+        {
+            _ammoCount += 5;
+        }
+        else if (_TripleShotActive == true)
+        {
+            _tripleShotAmmo += 5;
+        }    
     }
 
     public void SpeedUp()

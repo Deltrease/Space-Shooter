@@ -811,7 +811,7 @@ MonoBehaviour:
   - {fileID: 3270833114187325507, guid: a7b98fc613e8cfd4c86126445f23bfc8, type: 3}
   - {fileID: 5924631614841593026, guid: a86f1fe2be16fc0449e1c1654387463e, type: 3}
   - {fileID: 8041336723641577940, guid: 65c4e7a1ab940134d8be3113a7145491, type: 3}
-  - {fileID: 0}
+  - {fileID: 7708196704452903497, guid: a6e407446a975724084d4819070a2d3f, type: 3}
 --- !u!4 &697025321
 Transform:
   m_ObjectHideFlags: 0
@@ -1054,6 +1054,7 @@ MonoBehaviour:
   _enemyLaserObject: {fileID: 0}
   _canBeDamaged: 1
   _shieldHealth: 3
+  _reloading: 0
   _playerAudio: {fileID: 859798062}
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _playerExplosionClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc,
