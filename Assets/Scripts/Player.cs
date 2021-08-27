@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     //use [SerializeField] for allowing a private value to be changed in the inspector view
     [SerializeField]
     private float _speed = 5f;
-    private float _speedMultiplier = 2;
+    //private float _speedMultiplier = 2;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -29,9 +29,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool _ShieldsActive = false;
     [SerializeField]
-    private SpriteRenderer[] _damageOne;
+    private SpriteRenderer _damageLeft;
     [SerializeField]
-    private SpriteRenderer[] _damageTwo;
+    private SpriteRenderer _damageRight;
     [SerializeField]
     private GameObject _enemyLaserObject;
     [SerializeField]
@@ -201,13 +201,13 @@ public class Player : MonoBehaviour
             if (_lives == 2)
             {
                 int randomSide = Random.Range(0, 2);
-                _damageOne[randomSide].enabled = true;
+                _damageLeft.enabled = true;
                 _UI.UpdateLives(_lives);
             }
             else if (_lives == 1)
             {
                 int otherSide = Random.Range(0, 2);
-                _damageTwo[otherSide].enabled = true;
+                _damageRight.enabled = true;
                 _UI.UpdateLives(_lives);
             }
             else if (_lives == 0)
@@ -227,6 +227,30 @@ public class Player : MonoBehaviour
                 PlayerGameOver();
             }
             Destroy(this.gameObject);
+        }
+    }
+
+    public void HealthGet()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+            if (_lives == 3)
+            {
+                int randomSide = Random.Range(0, 2);
+                _damageLeft.enabled = false;
+                _UI.UpdateLives(_lives);
+            }
+            else if (_lives == 2)
+            {
+                int otherSide = Random.Range(0, 2);
+                _damageRight.enabled = false;
+                _UI.UpdateLives(_lives);
+            }
+        }
+        else if(_lives == 3)
+        {
+            return;
         }
     }
 
@@ -258,12 +282,69 @@ public class Player : MonoBehaviour
     {
         if (_TripleShotActive == false)
         {
-            _ammoCount += 5;
+            if(_ammoCount > 10)
+            {
+                switch(_ammoCount)
+                {
+                    case 11:
+                        _ammoCount += 4;
+                        _UI.Ammo(_ammoCount);
+                        break;
+                    case 12:
+                        _ammoCount += 3;
+                        _UI.Ammo(_ammoCount);
+                        break;
+                    case 13:
+                        _ammoCount += 2;
+                        _UI.Ammo(_ammoCount);
+                        break;
+                    case 14:
+                        _ammoCount += 1;
+                        _UI.Ammo(_ammoCount);
+                        break;
+                    case 15:
+                        break;
+                }
+
+            }
+            else if (_ammoCount <= 10)
+            {
+                _ammoCount += 5;
+                _UI.Ammo(_ammoCount);
+            }
         }
         else if (_TripleShotActive == true)
         {
-            _tripleShotAmmo += 5;
-        }    
+            if(_tripleShotAmmo > 5)
+            {
+                switch(_tripleShotAmmo)
+                {
+                    case 6:
+                        _tripleShotAmmo += 4;
+                        _UI.Ammo(_tripleShotAmmo);
+                        break;
+                    case 7:
+                        _tripleShotAmmo += 3;
+                        _UI.Ammo(_tripleShotAmmo);
+                        break;
+                    case 8:
+                        _tripleShotAmmo += 2;
+                        _UI.Ammo(_tripleShotAmmo);
+                        break;
+                    case 9:
+                        _tripleShotAmmo += 1;
+                        _UI.Ammo(_tripleShotAmmo);
+                        break;
+                    case 10:
+                        break;
+                }
+            }
+            else if (_tripleShotAmmo <= 5)
+            {
+                _tripleShotAmmo += 5;
+                _UI.Ammo(_tripleShotAmmo);
+            }
+        }
     }
 
     public void SpeedUp()
