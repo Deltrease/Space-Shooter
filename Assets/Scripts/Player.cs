@@ -11,6 +11,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _TripleShotPrefab;
+    [SerializeField]
+    private GameObject _homingShotPrefab;
+    [SerializeField]
+    private GameObject _tripleHomingShotPrefab;
+    [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1.0f;
     [SerializeField]
@@ -19,9 +25,6 @@ public class Player : MonoBehaviour
     private int _ammoCount = 15;
     [SerializeField]
     private int _tripleShotAmmo = 10;
-
-    [SerializeField]
-    private GameObject _TripleShotPrefab;
     [SerializeField]
     private bool _TripleShotActive = false;
     [SerializeField]
@@ -29,17 +32,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool _ShieldsActive = false;
     [SerializeField]
+    private bool _homingActive = false;
+    [SerializeField]
     private SpriteRenderer _damageLeft;
     [SerializeField]
     private SpriteRenderer _damageRight;
-    [SerializeField]
-    private GameObject _enemyLaserObject;
     [SerializeField]
     private bool _canBeDamaged = true;
     [SerializeField]
     private int _shieldHealth = 3;
     [SerializeField]
     private bool _reloading = false;
+
+    private float _timeRemaining = 5.0f;
 
     private SpawnManager _spawnManager;
     private SpriteRenderer _blueShield;
@@ -129,7 +134,7 @@ public class Player : MonoBehaviour
 
         _canFire = Time.time + _fireRate;
         //spawn gameobject
-        if (_TripleShotActive == false)
+        if (_TripleShotActive == false && _homingActive == false)
         {
             if (_ammoCount == 0)
             {
@@ -144,7 +149,11 @@ public class Player : MonoBehaviour
                 _UI.Ammo(_ammoCount);
             }
         }
-
+        else if (_TripleShotActive == true && _homingActive == true)
+        {
+            Instantiate(_tripleHomingShotPrefab, transform.position, Quaternion.identity);
+            _playerAudio.Play();
+        }
         else if (_TripleShotActive == true)
         {
             if (_reloading == true)
@@ -158,7 +167,12 @@ public class Player : MonoBehaviour
                 _playerAudio.Play();
                 _UI.Ammo(_tripleShotAmmo);
             }
-        }   
+        }
+        else if (_homingActive == true)
+        {
+            Instantiate(_homingShotPrefab, transform.position, Quaternion.identity);
+            _playerAudio.Play();
+        }
     }
 
     public IEnumerator Reloading()
@@ -347,6 +361,20 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void HomingShot()
+    {
+        _homingActive = true;
+        StartCoroutine(HomingShotPowerDown());
+        _UI.Timer();
+    }
+
+    public IEnumerator HomingShotPowerDown()
+    {
+        yield return new WaitForSeconds(5);
+        _UI.TimerOff();
+        _homingActive = false;
+    }
+
     public void SpeedUp()
     {
         _SpeedUpActive = true;
@@ -356,11 +384,9 @@ public class Player : MonoBehaviour
 
     public IEnumerator SpeedUpPowerDown()
     {
-        {
             yield return new WaitForSeconds(5);
             _SpeedUpActive = false;
             _speed -= 5f;
-        }
     }
 
     public void ShieldsOn()
@@ -428,4 +454,5 @@ public class Player : MonoBehaviour
         }
 
     }
+
 }

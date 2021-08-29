@@ -32,6 +32,11 @@ public class UI_manager : MonoBehaviour
     private Text _ammoText;
     [SerializeField]
     private Text _reloadText;
+    [SerializeField]
+    private Text _homingShotText;
+
+    private bool _timerOn = false;
+    private float _timeLeft = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +50,17 @@ public class UI_manager : MonoBehaviour
     void Update()
     {
         _scoreText.text = "Score: " + _score;
+
+        if (_timerOn == true)
+        {
+            HomingShot();
+            _timeLeft -= Time.deltaTime;
+            if(_timeLeft <= 0)
+            {
+                _homingShotText.enabled = false;
+                _ammoText.enabled = true;
+            }
+        }
     }
 
     public void ScoreUp(int points)
@@ -106,13 +122,35 @@ public class UI_manager : MonoBehaviour
 
     public void NormalShot(int _currentAmmo)
     {
+        _homingShotText.enabled = false;
+        _ammoText.enabled = true;
         _ammoType = _normalShot;
         _ammoText.text = "Ammo " + _currentAmmo + "/15";
     }  
     
     public void TripleShot(int _currentAmmo)
     {
+        _homingShotText.enabled = false;
+        _ammoText.enabled = true;
         _ammoType = _tripleShot;
         _ammoText.text = "Triple Shot Ammo " +_currentAmmo + "/10";
+    }
+
+    public void HomingShot()
+    {
+        _ammoText.enabled = false;
+        _homingShotText.enabled = true;
+        _homingShotText.text = "Homing Shot Remaining: " + _timeLeft;
+    }
+
+    public void Timer()
+    {
+        _timerOn = true;
+    }
+    
+    public void TimerOff()
+    {
+        _timerOn = false;
+        _timeLeft = 5.0f;
     }
 }

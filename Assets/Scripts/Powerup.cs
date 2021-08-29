@@ -56,6 +56,9 @@ public class Powerup : MonoBehaviour
                     case 4:
                         player.HealthGet();
                         break;
+                    case 5:
+                        player.HomingShot();
+                        break;
                 }
             }
             Destroy(gameObject);

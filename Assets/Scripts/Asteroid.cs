@@ -16,12 +16,14 @@ public class Asteroid : MonoBehaviour
     private AudioClip _gameStartClip;
 
     private UI_manager _UI;
+    private CircleCollider2D _circleCollider;
     // Start is called before the first frame update
     void Start()
     {
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _asteroidAudioSource = GetComponent<AudioSource>();
         _UI = GameObject.Find("Canvas").GetComponent<UI_manager>();
+        _circleCollider = GetComponent<CircleCollider2D>();
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class Asteroid : MonoBehaviour
     {
         if(other.tag == "Laser")
         {
+            _circleCollider.enabled = false;
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             _spawnManager.StartSpawning();
             Destroy(other.gameObject);

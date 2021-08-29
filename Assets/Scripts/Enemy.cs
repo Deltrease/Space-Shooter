@@ -72,25 +72,23 @@ public class Enemy : MonoBehaviour
 
             if (_spawnManager != null)
             {
+                _alive = false;
                 _spawnManager.SpawnCounter();
             }
             _destruction.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _EnemyAudioSource.clip = _ExplosionClip;
             _EnemyAudioSource.Play();
-            _alive = false;
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);
         }
 
-        //if other is laser
-        //destroy laser
-        //destroy us
         if (other.tag == "Laser")
         {
 
             if (_spawnManager != null)
             {
+                _alive = false;
                 _spawnManager.SpawnCounter();
             }
             _destruction.SetTrigger("OnEnemyDeath");
@@ -99,7 +97,6 @@ public class Enemy : MonoBehaviour
             _speed = 0;
             _EnemyAudioSource.clip = _ExplosionClip;
             _EnemyAudioSource.Play();
-            _alive = false;
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);
         }
@@ -107,12 +104,13 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Firing()
     {
+        yield return new WaitForSeconds(1);
         while (_alive == true)
         {
+            float randomFire = Random.Range(4, 6);
             _EnemyAudioSource.clip = _laserFire;
             _EnemyAudioSource.Play();
-            float randomFire = Random.Range(5, 8);
-            Instantiate(_laserPrefab, (transform.position + new Vector3(0, -0.8f,0)), Quaternion.identity);
+            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             yield return new WaitForSeconds(randomFire);
         }
     }
