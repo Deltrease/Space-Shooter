@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
     private UI_manager _UI;
     private Game_Manager _gameManager;
     private Animator _turning;
+    private CameraShake _mainCamera;
 
     //variable to store audio clip
     [SerializeField]
@@ -80,6 +81,8 @@ public class Player : MonoBehaviour
         _playerAudio = GetComponent<AudioSource>();
         _playerAudio.clip = _laserSoundClip;
         _turning = GetComponent<Animator>();
+        _mainCamera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        
     }
 
     // Update is called once per frame
@@ -224,6 +227,7 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        StartCoroutine(_mainCamera.Shake(0.75f, 1));
         if (_ShieldsActive == true)
         {
             CheckShields();
@@ -248,6 +252,7 @@ public class Player : MonoBehaviour
             {
                 _UI.UpdateLives(_lives);
             }
+            
         }
 
         //random thruster on when damaged
