@@ -34,6 +34,8 @@ public class UI_manager : MonoBehaviour
     private Text _reloadText;
     [SerializeField]
     private Text _homingShotText;
+    [SerializeField]
+    private Slider _thrusterSlider;
 
     private bool _timerOn = false;
     private float _timeLeft = 5.0f;
@@ -153,4 +155,9 @@ public class UI_manager : MonoBehaviour
         _timerOn = false;
         _timeLeft = 5.0f;
     }
+    
+    public void UpdateThrusterFuel(float value)
+    {
+        _thrusterSlider.value = value;
+    }    
 }

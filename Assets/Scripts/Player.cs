@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     private bool _reloading = false;
 
     private float _timeRemaining = 5.0f;
+    [SerializeField]
+    private float _fuel = 100f;
+    private bool _fuelCooldownActive = false;
 
     private SpawnManager _spawnManager;
     private SpriteRenderer _blueShield;
@@ -88,7 +91,23 @@ public class Player : MonoBehaviour
             FireLaser();
         }
         Turning();
+        _UI.UpdateThrusterFuel(_fuel);
 
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            if (_fuel > 0 && _fuelCooldownActive == false)
+            {
+                _fuel -= 15f * Time.deltaTime;
+            }
+            else
+            {
+                if(_speed == 10f)
+                {
+                    _speed -= 5f;
+                }
+                StartCoroutine(ThrusterCooldown());
+            }
+        }
     }
 
     //create new voids to organize your work
@@ -120,16 +139,17 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _fuelCooldownActive == false)
         {
-            _speed += 5f;
+                _speed += 5f;
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        else if (Input.GetKeyUp(KeyCode.LeftShift) && _fuelCooldownActive == false)
         {
             _speed -= 5f;
         }
     }
-    void FireLaser()
+
+    private void FireLaser()
     {
 
         _canFire = Time.time + _fireRate;
@@ -455,4 +475,18 @@ public class Player : MonoBehaviour
 
     }
 
+    public IEnumerator ThrusterCooldown()
+    {
+        _fuelCooldownActive = true;
+        yield return new WaitForSeconds(1.5f);
+        while (_fuelCooldownActive == true)
+        {
+            _fuel += 5f * Time.deltaTime;
+            if (_fuel >= 100.0f)
+            {
+                _fuelCooldownActive = false;
+            }
+            yield return new WaitForSeconds(15 * Time.deltaTime);
+        }
+    }
 }
