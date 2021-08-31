@@ -24,6 +24,17 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private bool _alive = true;
 
+    [SerializeField]
+    private float _timer = 0;
+    private int _randomMovement = 0;
+    [SerializeField]
+    private int _movementType = 0;
+    [SerializeField]
+    private int _leftOrRight = 0;
+    private bool _zigZag = false;
+    private bool _left = false;
+    private bool _right = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +43,8 @@ public class Enemy : MonoBehaviour
         _destruction = GetComponent<Animator>();
         _EnemyAudioSource = GetComponent<AudioSource>();
         StartCoroutine(Firing());
+        Randomizer();
+
     }
 
     // Update is called once per frame
@@ -40,19 +53,88 @@ public class Enemy : MonoBehaviour
         Movement();
 
 
-
+    }
+    
+    public void Randomizer()
+    {
+        if (_randomMovement == 0)
+        {
+            _randomMovement++;
+            _movementType = Random.Range(0, 2);
+            _leftOrRight = Random.Range(0, 2);
+            if(_leftOrRight == 0)
+            {
+                _left = true;
+            }
+            else if (_leftOrRight == 1)
+            {
+                _right = true;
+            }
+        }
     }
 
     void Movement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y <= -5.3)
+        if (_movementType == 0)
         {
-            float randomX = Random.Range(-9, 10);
-            transform.position = new Vector3(randomX, 7.3f, 0);
-        }
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
+            if (transform.position.y <= -5.3)
+            {
+                float randomX = Random.Range(-9, 10);
+                transform.position = new Vector3(randomX, 7.3f, 0);
+            }
+        }
+        else if(_movementType == 1)
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+            if (_left == true)
+            {
+                if (_timer <= 0)
+                {
+                    _timer = 1;
+                    _left = false;
+                    _right = true;
+                }
+                else if (_timer <= 1)
+                {
+                    _timer -= Time.deltaTime;
+                    transform.Translate(Vector3.left * _speed * Time.deltaTime);
+                    if (transform.position.y <= -5.3)
+                    {
+                        float randomX = Random.Range(-9, 10);
+                        transform.position = new Vector3(randomX, 7.3f, 0);
+                    }
+                    else if (transform.position.x >= 11)
+                    {
+                        transform.position = new Vector3(-11f, transform.position.y, 0);
+                    }
+                    else if (transform.position.x <= -11)
+                    {
+                        transform.position = new Vector3(11f, transform.position.y, 0);
+                    }
+                }
+            }
+            else if (_right == true)
+            {
+                if(_timer <= 0)
+                {
+                    _timer = 1;
+                    _right = false;
+                    _left = true;
+                }
+                else if (_timer <= 1)
+                {
+                    _timer -= Time.deltaTime;
+                    transform.Translate(Vector3.right * _speed * Time.deltaTime);
+                    if (transform.position.y <= -5.3)
+                    {
+                        float randomX = Random.Range(-9, 10);
+                        transform.position = new Vector3(randomX, 7.3f, 0);
+                    }
+                }
+            }
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -114,5 +196,4 @@ public class Enemy : MonoBehaviour
             yield return new WaitForSeconds(randomFire);
         }
     }
-
 }

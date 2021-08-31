@@ -111,6 +111,10 @@ public class Player : MonoBehaviour
                 StartCoroutine(ThrusterCooldown());
             }
         }
+        if(_speed == 0)
+        {
+            _speed = 5;
+        }
     }
 
     //create new voids to organize your work
