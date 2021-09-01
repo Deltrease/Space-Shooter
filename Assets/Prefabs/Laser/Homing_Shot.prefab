@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: -4308805416800253332}
   m_Layer: 0
   m_Name: Homing_Shot
-  m_TagString: Untagged
+  m_TagString: Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -485,6 +485,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Laser (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 205420759987535546, guid: 980cac4f6dc58d4409f325f21abef3c3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2664541006507231472, guid: 980cac4f6dc58d4409f325f21abef3c3,
         type: 3}

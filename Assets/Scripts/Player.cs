@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
     private int _shieldHealth = 3;
     [SerializeField]
     private bool _reloading = false;
+    [SerializeField]
+    private bool _inverseControlsActive = false;
 
     private float _timeRemaining = 5.0f;
     [SerializeField]
@@ -120,39 +122,78 @@ public class Player : MonoBehaviour
     //create new voids to organize your work
     void CalculateMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-
-        transform.Translate(direction * _speed * Time.deltaTime);
-        //Use if/elseif for making boundaries
-
-        if (transform.position.y >= 2.5)
+        if (_inverseControlsActive == false)
         {
-            transform.position = new Vector3(transform.position.x, 2.5f, 0);
-        }
-        else if (transform.position.y <= -3.8)
-        {
-            transform.position = new Vector3(transform.position.x, -3.8f, 0);
-        }
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
 
-        if (transform.position.x >= 11.3)
-        {
-            transform.position = new Vector3(-11.3f, transform.position.y, 0);
-        }
-        else if (transform.position.x <= -11.3)
-        {
-            transform.position = new Vector3(11.3f, transform.position.y, 0);
-        }
+            Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && _fuelCooldownActive == false)
-        {
+            transform.Translate(direction * _speed * Time.deltaTime);
+            //Use if/elseif for making boundaries
+
+            if (transform.position.y >= 2.5)
+            {
+                transform.position = new Vector3(transform.position.x, 2.5f, 0);
+            }
+            else if (transform.position.y <= -3.8)
+            {
+                transform.position = new Vector3(transform.position.x, -3.8f, 0);
+            }
+
+            if (transform.position.x >= 11.3)
+            {
+                transform.position = new Vector3(-11.3f, transform.position.y, 0);
+            }
+            else if (transform.position.x <= -11.3)
+            {
+                transform.position = new Vector3(11.3f, transform.position.y, 0);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift) && _fuelCooldownActive == false)
+            {
                 _speed += 5f;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift) && _fuelCooldownActive == false)
+            {
+                _speed -= 5f;
+            }
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && _fuelCooldownActive == false)
+        else if (_inverseControlsActive == true)
         {
-            _speed -= 5f;
+            float horizontalInput = Input.GetAxis("Horizontal2");
+            float verticalInput = Input.GetAxis("Vertical2");
+            Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+
+            transform.Translate(direction * _speed * Time.deltaTime);
+            //Use if/elseif for making boundaries
+
+            if (transform.position.y >= 2.5)
+            {
+                transform.position = new Vector3(transform.position.x, 2.5f, 0);
+            }
+            else if (transform.position.y <= -3.8)
+            {
+                transform.position = new Vector3(transform.position.x, -3.8f, 0);
+            }
+
+            if (transform.position.x >= 11.3)
+            {
+                transform.position = new Vector3(-11.3f, transform.position.y, 0);
+            }
+            else if (transform.position.x <= -11.3)
+            {
+                transform.position = new Vector3(11.3f, transform.position.y, 0);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift) && _fuelCooldownActive == false)
+            {
+                _speed += 5f;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift) && _fuelCooldownActive == false)
+            {
+                _speed -= 5f;
+            }
         }
     }
 
@@ -456,6 +497,17 @@ public class Player : MonoBehaviour
     {
         _ShieldsActive = false;
         _redShield.enabled = false;
+    }
+
+    public void InverseControls()
+    {
+        _inverseControlsActive = true;
+        StartCoroutine(DeactivateInverseControls());
+    }
+    public IEnumerator DeactivateInverseControls()
+    {
+        yield return new WaitForSeconds(5);
+        _inverseControlsActive = false;
     }
 
     public void PlayerGameOver()

@@ -107,11 +107,11 @@ public class Enemy : MonoBehaviour
                     }
                     else if (transform.position.x >= 11)
                     {
-                        transform.position = new Vector3(-11f, transform.position.y, 0);
+                        transform.position = new Vector3(-10.5f, transform.position.y, 0);
                     }
                     else if (transform.position.x <= -11)
                     {
-                        transform.position = new Vector3(11f, transform.position.y, 0);
+                        transform.position = new Vector3(10.5f, transform.position.y, 0);
                     }
                 }
             }
@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour
         //damage the player
         //destroy us
         //activate spawn count
-        if (other.tag == "Player")
+        if (other.tag == "Player" && _alive == true)
         {
             Player player= other.GetComponent<Player>();
 
@@ -150,8 +150,6 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-
-
             if (_spawnManager != null)
             {
                 _alive = false;
@@ -165,13 +163,14 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2.5f);
         }
 
-        if (other.tag == "Laser")
+        if (other.tag == "Laser" && _alive == true)
         {
 
             if (_spawnManager != null)
             {
                 _alive = false;
                 _spawnManager.SpawnCounter();
+                _spawnManager.Kills();
             }
             _destruction.SetTrigger("OnEnemyDeath");
             _UI.ScoreUp(Random.Range(10,21));

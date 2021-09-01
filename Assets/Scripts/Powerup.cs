@@ -59,6 +59,9 @@ public class Powerup : MonoBehaviour
                     case 5:
                         player.HomingShot();
                         break;
+                    case 6:
+                        player.InverseControls();
+                        break;
                 }
             }
             Destroy(gameObject);
