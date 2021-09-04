@@ -43,29 +43,35 @@ public class Enemy : MonoBehaviour
     private bool _right = false;
     private bool _moving = false;
     private bool _shielding = false;
+    private bool _firing = true;
     [SerializeField]
     private int _counting = 0;
+    [SerializeField]
+    private GameObject[] _powerups;
     // Start is called before the first frame update
     void Start()
     {
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _UI = GameObject.Find("Canvas").GetComponent<UI_manager>();
         _player = GameObject.FindGameObjectWithTag("Player");
+        _powerups = GameObject.FindGameObjectsWithTag("Powerup");
         _destruction = GetComponent<Animator>();
         _EnemyAudioSource = GetComponent<AudioSource>();
-        _playerPosition = _player.transform;
-        _target = _player.transform;
+        if (_player != null)
+        {
+            _playerPosition = _player.transform;
+            _target = _player.transform;
+        }
         StartCoroutine(Firing());
         Randomizer();
 
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
         Movement();
         RamCheck();
-
     }
 
     public void Randomizer()
@@ -305,6 +311,16 @@ public class Enemy : MonoBehaviour
             {
                 _counting--;
             }
+        }
+    }
+    public IEnumerator PowerupDestroy()
+    {
+        if(_firing == true)
+        {
+            _firing = false;
+            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(2);
+            _firing = true;
         }
     }
 }

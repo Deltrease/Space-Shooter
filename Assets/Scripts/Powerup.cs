@@ -39,7 +39,7 @@ public class Powerup : MonoBehaviour
             AudioSource.PlayClipAtPoint(_powerUpClip, transform.position);
             if (player != null)
             {
-                switch(powerupID)
+                switch (powerupID)
                 {
                     case 0:
                         player.TripleShot();
@@ -64,6 +64,14 @@ public class Powerup : MonoBehaviour
                         break;
                 }
             }
+            Destroy(gameObject);
+        }
+        else if (other.tag == "Enemy Laser")
+        {
+            Destroy(gameObject);
+        }
+        else if (other.tag == "Enemy")
+        {
             Destroy(gameObject);
         }
     }
