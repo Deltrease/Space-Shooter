@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     private GameObject _enemyPrefab;
     [SerializeField]
     private SpawnManager _spawnManager;
-    private Player _player;
+    private GameObject _player;
+    private Transform _target;
     private UI_manager _UI;
     public Animator _destruction;
     [SerializeField]
@@ -24,7 +25,6 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer _shield;
     [SerializeField]
     private bool _alive = true;
-
     [SerializeField]
     private float _timer = 0;
     private int _randomMovement = 0;
@@ -45,6 +45,7 @@ public class Enemy : MonoBehaviour
     {
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _UI = GameObject.Find("Canvas").GetComponent<UI_manager>();
+        _player = GameObject.FindGameObjectWithTag("Player");
         _destruction = GetComponent<Animator>();
         _EnemyAudioSource = GetComponent<AudioSource>();
         StartCoroutine(Firing());
@@ -56,7 +57,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Movement();
-
+        RamCheck();
 
     }
 
@@ -180,10 +181,6 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //if other is player
-        //damage the player
-        //destroy us
-        //activate spawn count
         if (other.tag == "Player" && _alive == true)
         {
             Player player = other.GetComponent<Player>();
@@ -266,5 +263,25 @@ public class Enemy : MonoBehaviour
                 yield return new WaitForSeconds(2);
             }
         }
+    }
+    public void RamCheck()
+    {
+        _target = _player.transform;
+        Vector3 enemyPos = transform.position;
+        Vector3 playerPos = _target.position;
+        int range = 4;
+        if (Vector3.Distance(enemyPos, playerPos) < range)
+        {
+            Ram();
+        }
+        else if (Vector3.Distance(enemyPos, playerPos) > range)
+        {
+            transform.rotation = Quaternion.identity;
+        }
+    }
+    public void Ram()
+    {
+        _target = _player.transform;
+        transform.up = transform.position - _target.position;
     }
 }
