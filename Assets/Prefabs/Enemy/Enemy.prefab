@@ -57,6 +57,8 @@ MonoBehaviour:
   _ExplosionClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _laserPrefab: {fileID: 3023745687873624941, guid: cb7481fd0cb2f004db584b6e14e628f7,
     type: 3}
+  _laserPrefab2: {fileID: 2640683743016949342, guid: 11b99fbb48289ac49bb2bc86c5aefeb5,
+    type: 3}
   _laserFire: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _shield: {fileID: 1645671733152185355}
   _alive: 1
@@ -64,6 +66,7 @@ MonoBehaviour:
   _movementType: 0
   _leftOrRight: 0
   _enemyType: 0
+  _counting: 0
 --- !u!212 &5149017053498582148
 SpriteRenderer:
   m_ObjectHideFlags: 0

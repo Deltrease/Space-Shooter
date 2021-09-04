@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private SpawnManager _spawnManager;
     private GameObject _player;
     private Transform _target;
+    private Transform _playerPosition;
     private UI_manager _UI;
     public Animator _destruction;
     [SerializeField]
@@ -19,6 +20,8 @@ public class Enemy : MonoBehaviour
     private AudioClip _ExplosionClip;
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _laserPrefab2;
     [SerializeField]
     private AudioClip _laserFire;
     [SerializeField]
@@ -40,6 +43,8 @@ public class Enemy : MonoBehaviour
     private bool _right = false;
     private bool _moving = false;
     private bool _shielding = false;
+    [SerializeField]
+    private int _counting = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +53,8 @@ public class Enemy : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         _destruction = GetComponent<Animator>();
         _EnemyAudioSource = GetComponent<AudioSource>();
+        _playerPosition = _player.transform;
+        _target = _player.transform;
         StartCoroutine(Firing());
         Randomizer();
 
@@ -200,6 +207,7 @@ public class Enemy : MonoBehaviour
                 _speed = 0;
                 _EnemyAudioSource.clip = _ExplosionClip;
                 _EnemyAudioSource.Play();
+                gameObject.tag = "Untagged";
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject, 2.5f);
             }
@@ -226,6 +234,7 @@ public class Enemy : MonoBehaviour
                 _speed = 0;
                 _EnemyAudioSource.clip = _ExplosionClip;
                 _EnemyAudioSource.Play();
+                gameObject.tag = "Untagged";
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject, 2.5f);
             }
@@ -245,11 +254,22 @@ public class Enemy : MonoBehaviour
             yield return new WaitForSeconds(1);
             while (_alive == true)
             {
-                float randomFire = Random.Range(4, 6);
-                _EnemyAudioSource.clip = _laserFire;
-                _EnemyAudioSource.Play();
-                Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(randomFire);
+                if(_playerPosition.position.y > transform.position.y)
+                {
+                    float randomFire = Random.Range(4, 6);
+                    _EnemyAudioSource.clip = _laserFire;
+                    _EnemyAudioSource.Play();
+                    Instantiate(_laserPrefab2, transform.position, Quaternion.identity);
+                    yield return new WaitForSeconds(randomFire);
+                }
+                else
+                {
+                    float randomFire = Random.Range(4, 6);
+                    _EnemyAudioSource.clip = _laserFire;
+                    _EnemyAudioSource.Play();
+                    Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                    yield return new WaitForSeconds(randomFire);
+                }
             }
         }
         else if (_enemyType == 1)
@@ -266,22 +286,25 @@ public class Enemy : MonoBehaviour
     }
     public void RamCheck()
     {
-        _target = _player.transform;
         Vector3 enemyPos = transform.position;
         Vector3 playerPos = _target.position;
         int range = 4;
         if (Vector3.Distance(enemyPos, playerPos) < range)
         {
-            Ram();
+            if(_counting == 0)
+            {
+                _counting++;
+                _target = _player.transform;
+                transform.up = transform.position - _target.position;
+            }
         }
         else if (Vector3.Distance(enemyPos, playerPos) > range)
         {
             transform.rotation = Quaternion.identity;
+            if (_counting == 1)
+            {
+                _counting--;
+            }
         }
-    }
-    public void Ram()
-    {
-        _target = _player.transform;
-        transform.up = transform.position - _target.position;
     }
 }
