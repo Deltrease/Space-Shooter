@@ -997,6 +997,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 4900477859129042483, guid: 664c0f50018f79f47b730e8574328305,
     type: 3}
+  _alienEnemyPrefab: {fileID: 3881749415729219205, guid: 46df281ca49f6e942973739be0355d1e,
+    type: 3}
   _enemyContainer: {fileID: 1179243317}
   _laser: {fileID: 0}
   _stopSpawning: 0
@@ -1010,7 +1012,7 @@ MonoBehaviour:
   - {fileID: 3270833114187325507, guid: a7b98fc613e8cfd4c86126445f23bfc8, type: 3}
   - {fileID: 4642889702187860387, guid: 7c5ff8bebbff3dc419a435197b0ca65c, type: 3}
   - {fileID: 4642889702187860387, guid: 7c5ff8bebbff3dc419a435197b0ca65c, type: 3}
-  - {fileID: 8041336723641577940, guid: 65c4e7a1ab940134d8be3113a7145491, type: 3}
+  - {fileID: 4642889702187860387, guid: 7c5ff8bebbff3dc419a435197b0ca65c, type: 3}
   - {fileID: 8041336723641577940, guid: 65c4e7a1ab940134d8be3113a7145491, type: 3}
   - {fileID: 8041336723641577940, guid: 65c4e7a1ab940134d8be3113a7145491, type: 3}
   - {fileID: 5924631614841593026, guid: a86f1fe2be16fc0449e1c1654387463e, type: 3}
@@ -2141,7 +2143,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1073151378
 GameObject:
@@ -2885,7 +2887,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1650009978
 GameObject:
@@ -3154,7 +3156,7 @@ PrefabInstance:
     - target: {fileID: 7093606134405808310, guid: c9ba70b0b9b9c20449d92ac4bf0a10b1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7093606134405808310, guid: c9ba70b0b9b9c20449d92ac4bf0a10b1,
         type: 3}

@@ -7,6 +7,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
+    private GameObject _alienEnemyPrefab;
+    [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject _laser;
@@ -119,10 +121,19 @@ public class SpawnManager : MonoBehaviour
                     {
                         float randomSeconds = Random.Range(3, 5);
                         float randomX = Random.Range(9, -10);
+                        float randomSpawn = Random.Range(1, 3);
+                        Vector3 posSpawn = transform.position + new Vector3(randomX, 7.3f, 0);
                         yield return new WaitForSeconds(randomSeconds);
                         _spawnCount++;
-                        GameObject newEnemy = Instantiate(_enemyPrefab, (transform.position + new Vector3(randomX, 7.3f, 0)), Quaternion.identity);
-                        newEnemy.transform.parent = _enemyContainer.transform;
+                        if (randomSpawn == 1)
+                        {
+                            GameObject newEnemy = Instantiate(_enemyPrefab, posSpawn, Quaternion.identity);
+                            newEnemy.transform.parent = _enemyContainer.transform;
+                        }
+                        else if (randomSpawn == 2)
+                        {
+                            GameObject newEnemy = Instantiate(_alienEnemyPrefab, posSpawn, Quaternion.identity);
+                        }
                     }
                     while (_canSpawn == false)
                     {
@@ -144,10 +155,20 @@ public class SpawnManager : MonoBehaviour
                     {
                         float randomSeconds = Random.Range(3, 5);
                         float randomX = Random.Range(9, -10);
+                        float randomSpawn = Random.Range(1, 3);
+                        Vector3 posSpawn = transform.position + new Vector3(randomX, 7.3f, 0);
                         yield return new WaitForSeconds(randomSeconds);
                         _spawnCount++;
-                        GameObject newEnemy = Instantiate(_enemyPrefab, (transform.position + new Vector3(randomX, 7.3f, 0)), Quaternion.identity);
-                        newEnemy.transform.parent = _enemyContainer.transform;
+                        if (randomSpawn == 1)
+                        {
+                            GameObject newEnemy = Instantiate(_enemyPrefab, posSpawn, Quaternion.identity);
+                            newEnemy.transform.parent = _enemyContainer.transform;
+                        }
+                        else if (randomSpawn == 2)
+                        {
+                            GameObject newEnemy = Instantiate(_alienEnemyPrefab, posSpawn, Quaternion.identity);
+                            newEnemy.transform.parent = _enemyContainer.transform;
+                        }
                     }
                     while (_canSpawn == false)
                     {
@@ -169,10 +190,20 @@ public class SpawnManager : MonoBehaviour
                     {
                         float randomSeconds = Random.Range(3, 5);
                         float randomX = Random.Range(9, -10);
+                        float randomSpawn = Random.Range(1, 3);
+                        Vector3 posSpawn = transform.position + new Vector3(randomX, 7.3f, 0);
                         yield return new WaitForSeconds(randomSeconds);
                         _spawnCount++;
-                        GameObject newEnemy = Instantiate(_enemyPrefab, (transform.position + new Vector3(randomX, 7.3f, 0)), Quaternion.identity);
-                        newEnemy.transform.parent = _enemyContainer.transform;
+                        if (randomSpawn == 1)
+                        {
+                            GameObject newEnemy = Instantiate(_enemyPrefab, posSpawn, Quaternion.identity);
+                            newEnemy.transform.parent = _enemyContainer.transform;
+                        }
+                        else if (randomSpawn == 2)
+                        {
+                            GameObject newEnemy = Instantiate(_alienEnemyPrefab, posSpawn, Quaternion.identity);
+                            newEnemy.transform.parent = _enemyContainer.transform;
+                        }
                     }
                     while (_canSpawn == false)
                     {
