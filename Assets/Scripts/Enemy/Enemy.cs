@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private AudioClip _laserFire;
     [SerializeField]
+    private SpriteRenderer _shield;
+    [SerializeField]
     private bool _alive = true;
 
     [SerializeField]
@@ -32,11 +34,12 @@ public class Enemy : MonoBehaviour
     private int _leftOrRight = 0;
     [SerializeField]
     private int _enemyType; //0 = base, 1 = alien
+    private int _shieldsOn; //0 = no 1 = yes
     private bool _zigZag = false;
     private bool _left = false;
     private bool _right = false;
     private bool _moving = false;
-
+    private bool _shielding = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +65,7 @@ public class Enemy : MonoBehaviour
         if (_randomMovement == 0)
         {
             _randomMovement++;
+            _shieldsOn = Random.Range(0, 2);
             _movementType = Random.Range(0, 2);
             _leftOrRight = Random.Range(0, 2);
             if (_leftOrRight == 0)
@@ -72,13 +76,18 @@ public class Enemy : MonoBehaviour
             {
                 _right = true;
             }
+            if (_shieldsOn == 1 && _enemyType == 0)
+            {
+                _shield.enabled = true;
+                _shielding = true;
+            }
         }
     }
 
     void Movement()
     {
         if (_enemyType == 0)
-        {
+        {  
             if (_movementType == 0)
             {
                 transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -183,36 +192,52 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            if (_spawnManager != null)
+            if (_shielding == false)
             {
-                _alive = false;
-                _spawnManager.SpawnCounter();
+                if (_spawnManager != null)
+                {
+                    _alive = false;
+                    _spawnManager.SpawnCounter();
+                }
+                _destruction.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _EnemyAudioSource.clip = _ExplosionClip;
+                _EnemyAudioSource.Play();
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.5f);
             }
-            _destruction.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _EnemyAudioSource.clip = _ExplosionClip;
-            _EnemyAudioSource.Play();
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.5f);
+            else if (_shielding == true)
+            {
+                _shielding = false;
+                _shield.enabled = false;
+            }
         }
 
         if (other.tag == "Laser" && _alive == true)
         {
-
-            if (_spawnManager != null)
+            if (_shielding == false)
             {
-                _alive = false;
-                _spawnManager.SpawnCounter();
-                _spawnManager.Kills();
+                if (_spawnManager != null)
+                {
+                    _alive = false;
+                    _spawnManager.SpawnCounter();
+                    _spawnManager.Kills();
+                }
+                _destruction.SetTrigger("OnEnemyDeath");
+                _UI.ScoreUp(Random.Range(10, 21));
+                Destroy(other.gameObject);
+                _speed = 0;
+                _EnemyAudioSource.clip = _ExplosionClip;
+                _EnemyAudioSource.Play();
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.5f);
             }
-            _destruction.SetTrigger("OnEnemyDeath");
-            _UI.ScoreUp(Random.Range(10, 21));
-            Destroy(other.gameObject);
-            _speed = 0;
-            _EnemyAudioSource.clip = _ExplosionClip;
-            _EnemyAudioSource.Play();
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.5f);
+            else if(_shielding == true)
+            {
+                _shielding = false;
+                _shield.enabled = false;
+                Destroy(other.gameObject);
+            }
         }
     }
 
