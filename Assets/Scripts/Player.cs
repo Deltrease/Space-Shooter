@@ -51,6 +51,8 @@ public class Player : MonoBehaviour
     private float _fuel = 100f;
     private bool _fuelCooldownActive = false;
 
+    private bool _isMagnetCooldown = false;
+
     private SpawnManager _spawnManager;
     private SpriteRenderer _blueShield;
     private SpriteRenderer _greenShield;
@@ -97,26 +99,8 @@ public class Player : MonoBehaviour
         }
         Turning();
         _UI.UpdateThrusterFuel(_fuel);
-
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            if (_fuel > 0 && _fuelCooldownActive == false)
-            {
-                _fuel -= 15f * Time.deltaTime;
-            }
-            else
-            {
-                if(_speed == 10f)
-                {
-                    _speed -= 5f;
-                }
-                StartCoroutine(ThrusterCooldown());
-            }
-        }
-        if(_speed == 0)
-        {
-            _speed = 5;
-        }
+        Thrusters();
+        MagnetActivated();
     }
 
     //create new voids to organize your work
@@ -194,6 +178,29 @@ public class Player : MonoBehaviour
             {
                 _speed -= 5f;
             }
+        }
+    }
+
+    private void Thrusters()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (_fuel > 0 && _fuelCooldownActive == false)
+            {
+                _fuel -= 15f * Time.deltaTime;
+            }
+            else
+            {
+                if (_speed == 10f)
+                {
+                    _speed -= 5f;
+                }
+                StartCoroutine(ThrusterCooldown());
+            }
+        }
+        if (_speed == 0)
+        {
+            _speed = 5;
         }
     }
 
@@ -549,5 +556,43 @@ public class Player : MonoBehaviour
             }
             yield return new WaitForSeconds(15 * Time.deltaTime);
         }
+    }
+
+    private void MagnetActivated()
+    {
+        if(Input.GetKeyDown(KeyCode.C) && _isMagnetCooldown == false)
+        {
+            StartMagnet();
+        }
+        else if (Input.GetKeyDown(KeyCode.C) && _isMagnetCooldown == true)
+        {
+            Debug.Log("Magnet is cooling down");
+        }
+    }
+    
+    private void StartMagnet()
+    {
+        GameObject[] _powerUps = GameObject.FindGameObjectsWithTag("Powerup");
+
+        if (_powerUps != null)
+        {
+            for(int i = 0; i < _powerUps.Length; i++)
+            {
+                Powerup power = _powerUps[i].GetComponent<Powerup>();
+                power.Magnetise();
+                StartCoroutine(MagnetCooldownRoutine(5f));
+            }
+        }
+
+        if(_powerUps.Length == 0)
+        {
+            StartCoroutine(MagnetCooldownRoutine(5f));
+        }
+    }
+    private IEnumerator MagnetCooldownRoutine(float time)
+    {
+        _isMagnetCooldown = true;
+        yield return new WaitForSeconds(time);
+        _isMagnetCooldown = false;
     }
 }
