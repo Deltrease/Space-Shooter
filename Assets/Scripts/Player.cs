@@ -279,7 +279,7 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        StartCoroutine(_mainCamera.Shake(0.75f, 1));
+        StartCoroutine(_mainCamera.Shake(0.75f, 0.5f));
         if (_ShieldsActive == true)
         {
             CheckShields();

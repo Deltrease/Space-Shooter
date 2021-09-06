@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private SpawnManager _spawnManager;
     private GameObject _player;
     private Transform _target;
+    private Transform _target2;
     private Transform _playerPosition;
     private UI_manager _UI;
     public Animator _destruction;
@@ -45,9 +46,15 @@ public class Enemy : MonoBehaviour
     private bool _shielding = false;
     private bool _firing = true;
     [SerializeField]
+    private bool _canDodge = true;
+    [SerializeField]
+    private bool _dodgeStart = false;
+    [SerializeField]
     private int _counting = 0;
     [SerializeField]
     private GameObject[] _powerups;
+    [SerializeField]
+    private GameObject[] _laser;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +62,7 @@ public class Enemy : MonoBehaviour
         _UI = GameObject.Find("Canvas").GetComponent<UI_manager>();
         _player = GameObject.FindGameObjectWithTag("Player");
         _powerups = GameObject.FindGameObjectsWithTag("Powerup");
+        _laser = GameObject.FindGameObjectsWithTag("Laser");
         _destruction = GetComponent<Animator>();
         _EnemyAudioSource = GetComponent<AudioSource>();
         if (_player != null)
@@ -72,12 +80,17 @@ public class Enemy : MonoBehaviour
     {
         Movement();
         RamCheck();
+        if(_dodgeStart == true)
+        {
+            Dodging();
+        }
     }
 
     public void Randomizer()
     {
         if (_randomMovement == 0)
         {
+            _timer = 0.25f;
             _randomMovement++;
             _shieldsOn = Random.Range(0, 2);
             _movementType = Random.Range(0, 2);
@@ -191,6 +204,45 @@ public class Enemy : MonoBehaviour
             }
 
         }
+    }
+    public void DodgeStart()
+    {
+        _dodgeStart = true;
+    }
+    public void Dodging()
+    {
+        if (_canDodge == true)
+        {
+            if (_movementType == 0)
+            {
+                if (_leftOrRight == 0)
+                {
+                    transform.Translate(Vector3.left * _speed * 2 * Time.deltaTime);
+                    _timer -= Time.deltaTime;
+                    if(_timer <= 0)
+                    {
+                        _canDodge = false;
+                    }
+                }
+                else if (_leftOrRight == 1)
+                {
+                    transform.Translate(Vector3.right * _speed * 2 * Time.deltaTime);
+                    _timer -= Time.deltaTime;
+                    if(_timer <= 0)
+                    {
+                        _canDodge = false;
+                    }    
+                }
+            }
+            else if (_movementType == 1)
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }    
     }
     private void OnTriggerEnter2D(Collider2D other)
     {

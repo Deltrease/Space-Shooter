@@ -5,6 +5,8 @@ using UnityEngine;
 public class FrontDetection : MonoBehaviour
 {
     private Enemy _enemy;
+    [SerializeField]
+    private int _detectionType; //0 = front for enemy, 1 = circle for enemy
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +21,19 @@ public class FrontDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Powerup")
+        if (_detectionType == 0)
         {
-            StartCoroutine(_enemy.PowerupDestroy());
+            if (collision.tag == "Powerup")
+            {
+                StartCoroutine(_enemy.PowerupDestroy());
+            }
+        }
+        if(_detectionType == 1)
+        {
+            if (collision.tag == "Laser")
+            {
+                _enemy.DodgeStart();
+            }
         }
     }
 }
