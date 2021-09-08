@@ -92,10 +92,6 @@ public class SpawnManager : MonoBehaviour
                             _canSpawn = true;
                             _setKills = false;
                         }
-                        if (_kills > _spawnCount && _spawnCount == 0)
-                        {
-                            _canSpawn = true;
-                        }
                         else
                         {
                             yield return new WaitForSeconds(0.5f);
@@ -125,10 +121,6 @@ public class SpawnManager : MonoBehaviour
                             Waves();
                             _canSpawn = true;
                             _setKills = false;
-                        }
-                        if (_kills > _spawnCount && _spawnCount == 0)
-                        {
-                            _canSpawn = true;
                         }
                         else
                         {
@@ -169,10 +161,6 @@ public class SpawnManager : MonoBehaviour
                             _canSpawn = true;
                             _setKills = false;
                         }
-                        if (_kills > _spawnCount && _spawnCount == 0)
-                        {
-                            _canSpawn = true;
-                        }
                         else
                         {
                             yield return new WaitForSeconds(0.5f);
@@ -211,11 +199,7 @@ public class SpawnManager : MonoBehaviour
                         {
                             Waves();
                             _canSpawn = true;
-                        }
-                        if(_kills > _spawnCount && _spawnCount == 0)
-                        {
-                            _canSpawn = true;
-                        }    
+                        }   
                         else
                         {
                             yield return new WaitForSeconds(0.5f);

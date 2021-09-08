@@ -267,6 +267,7 @@ public class Enemy : MonoBehaviour
                 {
                     _alive = false;
                     _spawnManager.SpawnCounter();
+                    _spawnManager.Kills();
                 }
                 _destruction.SetTrigger("OnEnemyDeath");
                 _speed = 0;

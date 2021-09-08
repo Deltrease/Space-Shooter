@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy_Laser : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 10f;
+    private float _speed = 5f;
     [SerializeField]
     private int _shotType;
     private int _counter = 0;
