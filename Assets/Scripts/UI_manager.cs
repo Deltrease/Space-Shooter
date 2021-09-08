@@ -21,6 +21,10 @@ public class UI_manager : MonoBehaviour
     private Text _homingShotText;
     [SerializeField]
     private Text _waveText;
+    [SerializeField]
+    private Text _warningText;
+    [SerializeField]
+    private Text _winningText;
 
     [SerializeField]
     private float _score = 0;
@@ -34,6 +38,8 @@ public class UI_manager : MonoBehaviour
 
     [SerializeField]
     private Image _livesImage;
+    [SerializeField]
+    private Image _BossHealth;
 
     [SerializeField]
     private Sprite[] _liveSprites;
@@ -41,7 +47,10 @@ public class UI_manager : MonoBehaviour
     [SerializeField]
     private Slider _thrusterSlider;
 
+    [SerializeField]
+    private Game_Manager _gameManager;
 
+    private bool _loading = true;
     private bool _timerOn = false;
     private float _timeLeft = 5.0f;
     private float _fadeTime = 3f;
@@ -51,6 +60,7 @@ public class UI_manager : MonoBehaviour
     {
         _ammoType = _normalShot;
         _scoreText.text = "Score: " + _score;
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<Game_Manager>();
 
     }
 
@@ -98,6 +108,26 @@ public class UI_manager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
         }
+    }
+
+     public IEnumerator BossLoadingText()
+    {
+        while (_loading == true)
+        {
+            _warningText.enabled = true;
+            yield return new WaitForSeconds(0.5f);
+            _warningText.enabled = false;
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    public void BossHealthText(int _health)
+    {
+        if (_BossHealth.enabled == false)
+        {
+            _BossHealth.enabled = true;
+            _loading = false;
+        }
+        _BossHealth.fillAmount = Mathf.Clamp((_health / 75f), 0, 1f);
     }
 
     public void StartGame()
@@ -190,5 +220,10 @@ public class UI_manager : MonoBehaviour
             _waveText.color = new Color(_waveText.color.r, _waveText.color.g, _waveText.color.b, _waveText.color.a - (Time.deltaTime / t));
             yield return null;
         }
+    }
+    public void WinningScreen()
+    {
+        _winningText.enabled = true;
+        _gameManager.GameOver();
     }
 }

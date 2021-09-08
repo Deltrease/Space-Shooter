@@ -39,12 +39,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int _enemyType; //0 = base, 1 = alien
     private int _shieldsOn; //0 = no 1 = yes
+    private int _life = 0;
     private bool _zigZag = false;
     private bool _left = false;
     private bool _right = false;
     private bool _moving = false;
     private bool _shielding = false;
     private bool _firing = true;
+    private bool _lifeSet = false;
     [SerializeField]
     private bool _canDodge = true;
     [SerializeField]
@@ -178,6 +180,11 @@ public class Enemy : MonoBehaviour
         }
         else if (_enemyType == 1)
         {
+            if(_life == 0 && _lifeSet == false)
+            {
+                _life = 1;
+                _lifeSet = true;
+            }
             if (_moving == false)
             {
                 _timer -= Time.deltaTime;
@@ -217,7 +224,7 @@ public class Enemy : MonoBehaviour
             {
                 if (_leftOrRight == 0)
                 {
-                    transform.Translate(Vector3.left * _speed * 2 * Time.deltaTime);
+                    transform.Translate(Vector3.left * _speed * 3 * Time.deltaTime);
                     _timer -= Time.deltaTime;
                     if(_timer <= 0)
                     {
@@ -226,7 +233,7 @@ public class Enemy : MonoBehaviour
                 }
                 else if (_leftOrRight == 1)
                 {
-                    transform.Translate(Vector3.right * _speed * 2 * Time.deltaTime);
+                    transform.Translate(Vector3.right * _speed * 3 * Time.deltaTime);
                     _timer -= Time.deltaTime;
                     if(_timer <= 0)
                     {
@@ -254,7 +261,7 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            if (_shielding == false)
+            if (_shielding == false && _life == 0)
             {
                 if (_spawnManager != null)
                 {
@@ -274,11 +281,15 @@ public class Enemy : MonoBehaviour
                 _shielding = false;
                 _shield.enabled = false;
             }
+            else if(_life != 0)
+            {
+                _life--;
+            }
         }
 
         if (other.tag == "Laser" && _alive == true)
         {
-            if (_shielding == false)
+            if (_shielding == false && _life == 0)
             {
                 if (_spawnManager != null)
                 {
@@ -300,6 +311,11 @@ public class Enemy : MonoBehaviour
             {
                 _shielding = false;
                 _shield.enabled = false;
+                Destroy(other.gameObject);
+            }
+            else if(_life != 0)
+            {
+                _life--;
                 Destroy(other.gameObject);
             }
         }
@@ -367,12 +383,15 @@ public class Enemy : MonoBehaviour
     }
     public IEnumerator PowerupDestroy()
     {
-        if(_firing == true)
+        if (_alive == true)
         {
-            _firing = false;
-            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-            yield return new WaitForSeconds(2);
-            _firing = true;
+            if (_firing == true)
+            {
+                _firing = false;
+                Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                yield return new WaitForSeconds(2);
+                _firing = true;
+            }
         }
     }
 }

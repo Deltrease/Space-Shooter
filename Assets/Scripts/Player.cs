@@ -217,6 +217,7 @@ public class Player : MonoBehaviour
             }
             else if (_ammoCount > 0)
             {
+                _fireRate = 0.5f;
                 _ammoCount--;
                 Vector3 gap = transform.position + new Vector3(0, 1.5f, 0);
                 Instantiate(_laserPrefab, gap, Quaternion.identity);
@@ -226,6 +227,7 @@ public class Player : MonoBehaviour
         }
         else if (_TripleShotActive == true && _homingActive == true)
         {
+            _fireRate = 1f;
             Instantiate(_tripleHomingShotPrefab, transform.position, Quaternion.identity);
             _playerAudio.Play();
         }
@@ -245,6 +247,7 @@ public class Player : MonoBehaviour
         }
         else if (_homingActive == true)
         {
+            _fireRate = 1f;
             Instantiate(_homingShotPrefab, transform.position, Quaternion.identity);
             _playerAudio.Play();
         }
@@ -273,6 +276,13 @@ public class Player : MonoBehaviour
             {
                 Damage();
                 Destroy(other.gameObject);
+            }
+        }
+        else if (other.tag == "BossLaser")
+        {
+            if(other != null)
+            {
+                Damage();
             }
         }
     }

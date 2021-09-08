@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa303e89863d5b44aa9039dadd818d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 3
   _enemyPrefab: {fileID: 4900477859129042483}
   _spawnManager: {fileID: 0}
   _destruction: {fileID: 0}
@@ -354,7 +354,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -162333175
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: fe61d67dcd61da442a5b97643381279c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -381,7 +381,7 @@ PrefabInstance:
     - target: {fileID: 6036075357133697205, guid: a82a91adfd75ec94590d18d7f9f0ee79,
         type: 3}
       propertyPath: m_Radius
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6113159954561258790, guid: a82a91adfd75ec94590d18d7f9f0ee79,
         type: 3}

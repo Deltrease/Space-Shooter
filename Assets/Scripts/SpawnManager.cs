@@ -18,12 +18,15 @@ public class SpawnManager : MonoBehaviour
     private bool _canSpawn = true;
     [SerializeField]
     private bool _gameStart = false;
+    private bool _setKills = false;
     [SerializeField]
     private int _spawnCount = 0;
     [SerializeField]
     private int _waves = 0;
     [SerializeField]
     private GameObject[] _powerups;
+    [SerializeField]
+    private GameObject _boss;
     [SerializeField]
     private int _kills = 0;
     private float _cd = 0.2f;
@@ -65,7 +68,12 @@ public class SpawnManager : MonoBehaviour
             _canSpawn = false;
             switch(_waves)
             {
-                case 1: _kills = 10;
+                case 1:
+                    if (_setKills == false)
+                    {
+                        _kills = 8;
+                        _setKills = true;
+                    }
                     yield return new WaitForSeconds(3);
                     while(_stopSpawning == false && _spawnCount < _kills)
                     {
@@ -82,6 +90,11 @@ public class SpawnManager : MonoBehaviour
                         {
                             Waves();
                             _canSpawn = true;
+                            _setKills = false;
+                        }
+                        if (_kills > _spawnCount && _spawnCount == 0)
+                        {
+                            _canSpawn = true;
                         }
                         else
                         {
@@ -90,7 +103,11 @@ public class SpawnManager : MonoBehaviour
                     }
                     break;
                 case 2:
-                    _kills = 15;
+                    if (_setKills == false)
+                    {
+                        _kills = 12;
+                        _setKills = true;
+                    }
                     yield return new WaitForSeconds(3);
                     while (_stopSpawning == false && _spawnCount < _kills)
                     {
@@ -107,6 +124,11 @@ public class SpawnManager : MonoBehaviour
                         {
                             Waves();
                             _canSpawn = true;
+                            _setKills = false;
+                        }
+                        if (_kills > _spawnCount && _spawnCount == 0)
+                        {
+                            _canSpawn = true;
                         }
                         else
                         {
@@ -115,7 +137,11 @@ public class SpawnManager : MonoBehaviour
                     }
                     break;
                 case 3:
-                    _kills = 20;
+                    if (_setKills == false)
+                    {
+                        _kills = 16;
+                        _setKills = true;
+                    }
                     yield return new WaitForSeconds(3);
                     while (_stopSpawning == false && _spawnCount < _kills)
                     {
@@ -140,6 +166,11 @@ public class SpawnManager : MonoBehaviour
                         if (_kills == 0)
                         {
                             Waves();
+                            _canSpawn = true;
+                            _setKills = false;
+                        }
+                        if (_kills > _spawnCount && _spawnCount == 0)
+                        {
                             _canSpawn = true;
                         }
                         else
@@ -149,7 +180,11 @@ public class SpawnManager : MonoBehaviour
                     }
                     break;
                 case 4:
-                    _kills = 25;
+                    if (_setKills == false)
+                    {
+                        _kills = 20;
+                        _setKills = true;
+                    }
                     yield return new WaitForSeconds(3);
                     while (_stopSpawning == false && _spawnCount < _kills)
                     {
@@ -177,6 +212,10 @@ public class SpawnManager : MonoBehaviour
                             Waves();
                             _canSpawn = true;
                         }
+                        if(_kills > _spawnCount && _spawnCount == 0)
+                        {
+                            _canSpawn = true;
+                        }    
                         else
                         {
                             yield return new WaitForSeconds(0.5f);
@@ -184,26 +223,17 @@ public class SpawnManager : MonoBehaviour
                     }
                     break;
                 case 5:
-                    _kills = 25;
-                    yield return new WaitForSeconds(3);
+                    if (_setKills == false)
+                    {
+                        _kills = 1;
+                        _setKills = true;
+                    }
                     while (_stopSpawning == false && _spawnCount < _kills)
                     {
-                        float randomSeconds = Random.Range(3, 5);
-                        float randomX = Random.Range(9, -10);
-                        float randomSpawn = Random.Range(1, 3);
-                        Vector3 posSpawn = transform.position + new Vector3(randomX, 7.3f, 0);
-                        yield return new WaitForSeconds(randomSeconds);
                         _spawnCount++;
-                        if (randomSpawn == 1)
-                        {
-                            GameObject newEnemy = Instantiate(_enemyPrefab, posSpawn, Quaternion.identity);
-                            newEnemy.transform.parent = _enemyContainer.transform;
-                        }
-                        else if (randomSpawn == 2)
-                        {
-                            GameObject newEnemy = Instantiate(_alienEnemyPrefab, posSpawn, Quaternion.identity);
-                            newEnemy.transform.parent = _enemyContainer.transform;
-                        }
+                        Vector3 posSpawn = transform.position + new Vector3(0, 10, 0);
+                        GameObject newBoss = Instantiate(_boss, posSpawn, Quaternion.identity);
+                        newBoss.transform.parent = _enemyContainer.transform;
                     }
                     while (_canSpawn == false)
                     {
@@ -218,6 +248,9 @@ public class SpawnManager : MonoBehaviour
                         }
                     }
                     break;
+                    case 6:
+                    _UI.WinningScreen();
+                        break;
             }    
         }
     }
@@ -249,7 +282,14 @@ public class SpawnManager : MonoBehaviour
     public void Waves()
     {
         _waves++;
-        StartCoroutine(_UI.FadeTextToFullAlpha(_waves));
+        if (_waves == 6)
+        {
+            _stopSpawning = true;
+        }
+        else
+        {
+            StartCoroutine(_UI.FadeTextToFullAlpha(_waves));
+        }
     }
     
     public void OnPlayerDeath()

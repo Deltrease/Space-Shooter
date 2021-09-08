@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: -4308805416800253332}
   m_Layer: 0
   m_Name: Homing_Shot
-  m_TagString: Laser
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 0.5
   _shotSpeed: 2
-  _shotType: 0
+  _shotType: 1
 --- !u!114 &7319258989114306793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,7 +489,7 @@ PrefabInstance:
     - target: {fileID: 205420759987535546, guid: 980cac4f6dc58d4409f325f21abef3c3,
         type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Laser
       objectReference: {fileID: 0}
     - target: {fileID: 2664541006507231472, guid: 980cac4f6dc58d4409f325f21abef3c3,
         type: 3}

@@ -9,6 +9,8 @@ TagManager:
   - Laser
   - Enemy Laser
   - Powerup
+  - Boss
+  - BossLaser
   layers:
   - Default
   - TransparentFX

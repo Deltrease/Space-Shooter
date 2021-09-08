@@ -12,6 +12,7 @@ public class Laser : MonoBehaviour
     private int _shotType;
     private Transform _target;
 
+    private GameObject _boss;
     private GameObject[] _enemy;
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class Laser : MonoBehaviour
     public void Firing()
     {
         _enemy = GameObject.FindGameObjectsWithTag("Enemy");
+        _boss = GameObject.FindGameObjectWithTag("Boss");
 
         if (_shotType == 0)
         {
@@ -42,12 +44,19 @@ public class Laser : MonoBehaviour
         {
             transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
-            for (int i = 0; i < _enemy.Length; i++)
+            if (_boss != null)
             {
-                _target = _enemy[i].transform;
+                _target = _boss.transform;
                 transform.up = _target.position - transform.position;
             }
-
+            else if (_boss == null)
+            {
+                for (int i = 0; i < _enemy.Length; i++)
+                {
+                    _target = _enemy[i].transform;
+                    transform.up = _target.position - transform.position;
+                }
+            }
         }
         if (transform.position.y >= 8)
         {
